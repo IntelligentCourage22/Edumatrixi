@@ -14,9 +14,21 @@ from django.contrib import messages
 from .db_operations import *
 from django.http import Http404
 from .models import *
+from .db_operations import *
+
 
 def home(request):
-    pass
+    return render(request,'home.html')
 
 def signup(request):
-    pass
+    print(request.method)
+    if request.method == "POST":
+        name = request.POST.get('username')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        print(name , email , password)
+        create_user(name,password,email)
+        return HttpResponseRedirect('home.html')
+    else:
+      return render(request,'signup.html')
+    

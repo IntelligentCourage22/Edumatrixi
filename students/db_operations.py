@@ -17,3 +17,4 @@ def create_user(name,password,email):
 		db.execute(statement,datatuple)
 		con.commit()
 		print("suc")
+

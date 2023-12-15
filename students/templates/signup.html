@@ -1,95 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
+
     <style>
         body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-}
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-.container {
-    width: 350px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            width: 350px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-h2 {
-    text-align: center;
-    color: #333;
-}
+        h2 {
+            text-align: center;
+            color: #333;
+        }
 
-form {
-    display: flex;
-    flex-direction: column;
-}
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-label {
-    margin-bottom: 5px;
-}
+        label {
+            margin-bottom: 5px;
+        }
 
-input {
-    padding: 8px;
-    margin-bottom: 10px;
-}
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+        }
 
-button {
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-}
+        button {
+            padding: 10px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
 
-button:hover {
-    background-color: #45a049;
-}
-
-.error-message {
-    color: #ff0000;
-    margin-top: 5px;
-}
-
-.success-message {
-    color: #008000;
-    margin-top: 5px;
-}
-
-.login-link {
-    text-align: center;
-    margin-top: 10px;
-}
-
-.login-link a {
-    color: #0066cc;
-    text-decoration: none;
-}
-
-.login-link a:hover {
-    text-decoration: underline;
-}
-
+        button:hover {
+            background-color: #45a049;
+        }
 
         .error-message {
             color: #ff0000;
             margin-top: 5px;
         }
 
+        .success-message {
+            color: #008000;
+            margin-top: 5px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .login-link a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+
+        .error-message {
+            color: #ff0000;
+            margin-top: 5px;
+        }
     </style>
     <title>Signup Form</title>
 </head>
+
 <body>
     <div class="container">
         <h2>Create an Account</h2>
-        <form id="signupForm">
+        <form id="signupForm" method="POST">
+            {%csrf_token%}
             <label for="email">Email:</label>
             <input type="email" id="email" required>
 
@@ -102,7 +104,7 @@ button:hover {
             <label for="confirmPassword">Re-enter Password:</label>
             <input type="password" id="confirmPassword" required>
 
-            <button type="button" onclick="validateForm()">Sign Up</button>
+            <button type="submit" onclick="validateForm()">Sign Up</button>
 
             <p class="error-message" id="error-message"></p>
             <p class="success-message" id="success-message"></p>
@@ -115,34 +117,35 @@ button:hover {
 
     <script>
         function validateForm() {
-    var email = document.getElementById('email').value;
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
-    var confirmPassword = document.getElementById('confirmPassword').value;
+            var email = document.getElementById('email').value;
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
 
-    if (email === "" || username === "" || password === "" || confirmPassword === "") {
-        displayError("All fields are required");
-        return;
-    }
+            if (email === "" || username === "" || password === "" || confirmPassword === "") {
+                displayError("All fields are required");
+                return;
+            }
 
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        displayError("Invalid email address");
-        return;
-    }
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                displayError("Invalid email address");
+                return;
+            }
 
-    if (password !== confirmPassword) {
-        displayError("Passwords do not match!");
-        return;
-    }
-    alert("Signup successful!\nEmail: " + email + "\nUsername: " + username);
-}
+            if (password !== confirmPassword) {
+                displayError("Passwords do not match!");
+                return;
+            }
+            alert("Signup successful!\nEmail: " + email + "\nUsername: " + username);
+        }
 
-function displayError(message) {
-    var errorElement = document.getElementById('error-message');
-    errorElement.textContent = message;
-}
+        function displayError(message) {
+            var errorElement = document.getElementById('error-message');
+            errorElement.textContent = message;
+        }
 
     </script>
 </body>
+
 </html>

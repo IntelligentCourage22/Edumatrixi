@@ -18,17 +18,17 @@ from .db_operations import *
 
 
 def home(request):
-    return render(request,'home.html')
+    return render(request, "home.html")
+
 
 def signup(request):
-    print(request.method)
+    print(f"method: {request.method}")
     if request.method == "POST":
-        name = request.POST.get('username')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        print(name , email , password)
-        create_user(name,password,email)
-        return HttpResponseRedirect('home.html')
+        name = request.POST["username"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        print(name, email, password)
+        create_user(name, password, email)
+        return redirect("/")
     else:
-      return render(request,'signup.html')
-    
+        return render(request, "signup.html")

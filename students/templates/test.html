@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classy Test Window</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .test-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 70%;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .question {
+            display: none;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .options li {
+            margin-bottom: 10px;
+        }
+
+        .navigation-btn {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .menu {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="menu" id="menu">
+        <button class="navigation-btn" onclick="showQuestion('question1')">Q1</button>
+        <button class="navigation-btn" onclick="showQuestion('question2')">Q2</button>
+        <!-- Add more buttons as needed for additional questions -->
+    </div>
+
+    <div class="test-container">
+        <h2>Classy Test Window</h2>
+
+        <div class="question" id="question1">
+            <p><strong>Question 1:</strong> What is the capital of France?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q1" value="paris"> Paris</label></li>
+                <li><label><input type="radio" name="q1" value="berlin"> Berlin</label></li>
+                <li><label><input type="radio" name="q1" value="london"> London</label></li>
+            </ul>
+            <button class="navigation-btn" onclick="nextQuestion('question1', 'question2')">Next Question</button>
+        </div>
+
+        <div class="question" id="question2">
+            <p><strong>Question 2:</strong> What is the largest planet in our solar system?</p>
+            <ul class="options">
+                <li><label><input type="radio" name="q2" value="mercury"> Mercury</label></li>
+                <li><label><input type="radio" name="q2" value="venus"> Venus</label></li>
+                <li><label><input type="radio" name="q2" value="jupiter"> Jupiter</label></li>
+            </ul>
+            <button class="navigation-btn" onclick="submitTest()">Submit</button>
+        </div>
+
+        <!-- Add more questions as needed -->
+
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+
+        function showQuestion(questionId) {
+            // Hide the current question
+            document.getElementById('question' + currentQuestion).style.display = 'none';
+
+            // Show the selected question
+            document.getElementById(questionId).style.display = 'block';
+
+            // Update the current question
+            currentQuestion = parseInt(questionId.replace('question', ''));
+        }
+
+        function nextQuestion(currentQuestionId, nextQuestionId) {
+            document.getElementById(currentQuestionId).style.display = 'none';
+            document.getElementById(nextQuestionId).style.display = 'block';
+            currentQuestion = parseInt(nextQuestionId.replace('question', ''));
+        }
+
+        function submitTest() {
+            // Add logic to collect and process answers
+            alert("Test submitted!");
+        }
+    </script>
+
+    <script>
+        // Show the first question initially
+        document.getElementById('question1').style.display = 'block';
+    </script>
+
+</body>
+
+</html>

@@ -10,6 +10,11 @@
 
 <body>
   <h1>Helo children</h1>
+  {% if name %}
+  <h1>{{name}}</h1>
+  {%else%}
+  <h1>login</h1>
+  {%endif%}
 </body>
 
 </html>

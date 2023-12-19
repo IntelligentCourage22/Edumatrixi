@@ -17,8 +17,23 @@ from .models import *
 from .db_operations import *
 
 
+def login_required(function):
+    def wrapper(request, *args, **kw):
+        if not "user" in request.session:
+            return HttpResponseRedirect("/login")
+        else:
+            return function(request, *args, **kw)
+
+    return wrapper
+
+
 def home(request):
-    return render(request, "home.html")
+    if "user" in request.session:
+        cuser = request.session["user"]
+        ctx = {"name": cuser}
+        return render(request, "home.html", context=ctx)
+    else:
+        return render(request, "home.html")
 
 
 def signup(request):
@@ -32,3 +47,26 @@ def signup(request):
         return redirect("/")
     else:
         return render(request, "signup.html")
+
+
+def login(request):
+    if request.method == "POST":
+        email = request.POST["email"]
+        password = request.POST["password"]
+        confirm = login_user(email=email, password=password)
+        if confirm == True:
+            request.session["user"] = email
+            return redirect("/")
+
+        else:
+            messages.info(request, "Invalid credentials")
+            return redirect("/login")
+
+    else:
+        return render(request, "login.html")
+
+
+@login_required
+def logout(request):
+    del request.session["user"]
+    return render(request, "logout.html")

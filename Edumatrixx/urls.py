@@ -19,7 +19,9 @@ from django.urls import path
 from students import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("", views.home),
-    path("signup/", views.signup)
+    path("admin/", admin.site.urls),
+    path("", views.home, name="home"),
+    path("signup/", views.signup),
+    path("login/", views.login),
+    path("logout/", views.logout),
 ]

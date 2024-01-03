@@ -15,6 +15,7 @@ from .db_operations import *
 from django.http import Http404
 from .models import *
 from .db_operations import *
+from django.contrib import messages
 
 
 def login_required(function):
@@ -42,9 +43,14 @@ def signup(request):
         name = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
-        print(name, email, password)
-        create_user(name, password, email)
-        return redirect("/")
+        if check(email)==False:
+            messages.info(request,"email is already in use")
+            return redirect("/signup")
+        else:
+            print(name, email, password)
+            create_user(name, password, email)
+            return redirect("/")
+
     else:
         return render(request, "signup.html")
 

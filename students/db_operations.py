@@ -35,3 +35,15 @@ def login_user(email, password):
         return True
     else:
         return False
+
+def check(email):
+    statement = f"SELECT email FROM users WHERE email ='{email}'"
+    db.execute(statement)
+    result= db.fetchall()
+    #print(result)
+    if not result:
+        return True
+    else:
+        return False
+
+

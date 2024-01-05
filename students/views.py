@@ -76,3 +76,4 @@ def login(request):
 def logout(request):
     del request.session["user"]
     return render(request, "logout.html")
+

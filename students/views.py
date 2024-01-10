@@ -38,7 +38,6 @@ def home(request):
 
 
 def signup(request):
-    print(f"method: {request.method}")
     if request.method == "POST":
         name = request.POST["username"]
         email = request.POST["email"]
@@ -77,3 +76,6 @@ def logout(request):
     del request.session["user"]
     return render(request, "logout.html")
 
+
+def index(request):
+    return render(request,'index.html') 

@@ -42,6 +42,10 @@ def signup(request):
         name = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
+        conf_password = request.POST["confirmPassword"]
+        if password!=conf_password:
+            messages.info(request, "password matching not ahppen")
+            return redirect("/signup")
         if check(email)==False:
             messages.info(request,"email is already in use")
             return redirect("/signup")

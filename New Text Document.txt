@@ -1,0 +1,22 @@
+D:\Daniel 11_A\Edumatrixi>env\Scripts\activate
+
+(env) D:\Daniel 11_A\Edumatrixi>code .
+
+(env) D:\Daniel 11_A\Edumatrixi>dir
+ Volume in drive D is DATA
+ Volume Serial Number is CCD9-948B
+
+ Directory of D:\Daniel 11_A\Edumatrixi
+
+10-01-2024  14:04    <DIR>          .
+09-01-2024  13:37    <DIR>          ..
+03-01-2024  13:09    <DIR>          .vscode
+10-01-2024  14:04           139,264 db.sqlite3
+10-01-2024  13:09    <DIR>          Edumatrixx
+03-01-2024  13:10    <DIR>          env
+13-12-2023  12:14               688 manage.py
+10-01-2024  13:20    <DIR>          students
+               2 File(s)        139,952 bytes
+               6 Dir(s)  320,416,579,584 bytes free
+
+(env) D:\Daniel 11_A\Edumatrixi>python manage.py runserver

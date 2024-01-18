@@ -1,20 +1,156 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Edumatrixx</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="{%static 'img/favicon.png'%}" rel="icon">
+  <link href="{%static 'img/apple-touch-icon.png'%}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{%static 'vendor/aos/aos.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/glightbox/css/glightbox.min.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+  <link href="{%static 'vendor/swiper/swiper-bundle.min.css'%}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{%static 'css/home_styles.css'%}" rel="stylesheet">
+
+
 </head>
 
 <body>
-  <h1>Helo children</h1>
-  {% if name %}
-  <h1>{{name}}</h1>
-  {%else%}
-  <h1>login</h1>
-  {%endif%}
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top ">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto">Edumatrixx</h1>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link getstarted scrollto" href="#hero">Hello {{name}}! </a></li>
+          <li><a class="nav-link scrollto" href="{%url 'logout'%}">Logout</a></li>
+        </ul>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <section id="hero" class="d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1"
+          data-aos="fade-up" data-aos-delay="200">
+          <h1>Strengthen your concepts, Create a test</h1>
+          <br><br>
+          <div class="d-flex justify-content-center justify-content-lg-start">
+            <a href="#about" class="btn-get-started scrollto">Select Subject</a>
+
+          </div>
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="200">
+          <img src="{%static '/img/testing_team.png'%}" class="img-fluid animated" alt="">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+  <br><br><br>
+  <!--progress section-->
+  <section id="skills" class="skills">
+    <div class="container" data-aos="fade-up">
+
+      <div class="row">
+
+        <div class="justify-content-center" data-aos="fade-left" data-aos-delay="100">
+          <h3>Track your progress</h3>
+          <p class="fst-italic">
+            This shows your total percentage of correct answers in all the questions you have attempted
+          </p>
+          <br><br>
+          <div class="skills-content">
+
+            <div class="progress">
+              <span class="skill">Physics <i class="val">100%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Chemistry <i class="val">90%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
+                </div>
+              </div>
+            </div>
+
+            <div class="progress">
+              <span class="skill">Mathematics<i class="val">75%</i></span>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <br><br><br>
+
+  <!-- ======= Cta Section ======= -->
+  <section id="cta" class="cta">
+    <div class="container" data-aos="zoom-in">
+
+      <div class="row">
+        <div class="col-lg-9 text-center text-lg-start">
+          <h3>Practice makes perfect</h3>
+          <p> Create a test out of your mistakes to find exactly where you went wrong. </p>
+        </div>
+        <div class="col-lg-3 cta-btn-container text-center">
+          <a class="cta-btn align-middle" href="#">Create Test</a>
+        </div>
+      </div>
+
+    </div>
+  </section><!-- End Cta Section -->
+
+
+  <br><br><br>
+
+  <!-- Vendor JS Files -->
+  <script src="{%static 'vendor/aos/aos.js'%}"></script>
+  <script src="{%static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+  <script src="{%static 'vendor/glightbox/js/glightbox.min.js'%}"></script>
+  <script src="{%static 'vendor/isotope-layout/isotope.pkgd.min.js'%}"></script>
+  <script src="{%static 'vendor/swiper/swiper-bundle.min.js'%}"></script>
+  <script src="{%static 'vendor/waypoints/noframework.waypoints.js'%}"></script>
+  <script src="{%static 'vendor/php-email-form/validate.js'%}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{%static 'js/main.js'%}"></script>
 </body>
 
 </html>

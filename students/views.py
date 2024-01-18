@@ -28,10 +28,13 @@ def login_required(function):
     return wrapper
 
 
+@login_required
 def home(request):
     if "user" in request.session:
         cuser = request.session["user"]
-        ctx = {"name": cuser}
+        print(cuser)
+        name_of_user = info(cuser, "name")
+        ctx = {"name": name_of_user}
         return render(request, "home.html", context=ctx)
     else:
         return render(request, "home.html")
@@ -42,12 +45,8 @@ def signup(request):
         name = request.POST["username"]
         email = request.POST["email"]
         password = request.POST["password"]
-        conf_password = request.POST["confirmPassword"]
-        if password!=conf_password:
-            messages.info(request, "password matching not ahppen")
-            return redirect("/signup")
-        if check(email)==False:
-            messages.info(request,"email is already in use")
+        if check(email) == False:
+            messages.info(request, "email is already in use")
             return redirect("/signup")
         else:
             print(name, email, password)
@@ -82,4 +81,11 @@ def logout(request):
 
 
 def index(request):
-    return render(request,'index.html') 
+    if "user" in request.session:
+        cuser = request.session["user"]
+        print(cuser)
+        name_of_user = info(cuser, "name")
+        ctx = {"name": name_of_user}
+        return render(request, "index.html", context=ctx)
+    else:
+        return render(request, "index.html")

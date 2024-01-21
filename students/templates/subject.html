@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 20px;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #e0f2f1;
+            /* Blue background color */
+        }
+
+        .heading {
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            /* Increased margin */
+            color: #1565c0;
+            /* Blue heading color */
+        }
+
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 900;
+            padding: 1.25rem 2rem;
+            font-size: 1rem;
+            border-radius: 3.5rem/100%;
+            margin: 0.5rem;
+            overflow: hidden;
+            border: 0;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 330ms;
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            /* Text color */
+        }
+
+        .btn:before {
+            content: "";
+            background-color: #2196f3;
+            /* Blue button color */
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transform: scale(4) translateX(-100%);
+            transition: all 495ms ease-out;
+            z-index: -1;
+        }
+
+        .btn:hover:before,
+        .btn:focus:before,
+        .btn:active:before {
+            transform: scale(4) translate(37%);
+        }
+
+        .btn--alpha {
+            background-color: #2196f3;
+            /* Blue button color */
+        }
+
+        .btn--alpha:hover,
+        .btn--alpha:focus,
+        .btn--alpha:active {
+            color: #ffffff;
+            /* Text color */
+        }
+
+        .btn--beta {
+            background-color: #64b5f6;
+            /* Blue button color */
+        }
+
+        .btn--beta:hover,
+        .btn--beta:focus,
+        .btn--beta:active {
+            color: #0d47a1;
+            /* Text color */
+        }
+
+        .btn--gamma {
+            background-color: #1565c0;
+            /* Blue button color */
+        }
+
+        .btn--gamma:hover,
+        .btn--gamma:focus,
+        .btn--gamma:active {
+            color: #ffffff;
+            /* Text color */
+        }
+
+        @media (max-width: 600px) {
+
+            /* On smaller screens, arrange buttons in a column */
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1 class="heading">Choose a Subject</h1>
+    <form id="Subject" action="" method="POST">
+        {%csrf_token%}
+        <div class="btn-container">
+            <label for="maths"><button class="btn btn--alpha" name="subject"
+                    value="Mathematics"><span>Mathematics</span></button></label>
+            <label for=" physics"><button class="btn btn--alpha" name="subject" value="physics"
+                    <span>Physics</span></button></label>
+            <label for="chemistry"><button class="btn btn--alpha" name="subject"
+                    value="chemistry"><span>Chemistry</span></button></label>
+        </div>
+    </form>
+</body>
+
+</html>

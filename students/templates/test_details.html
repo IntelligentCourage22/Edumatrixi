@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 20px;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #e0f2f1;
+            /* Blue background color */
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            /* White background for form */
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .form-heading {
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #1565c0;
+            /* Blue heading color */
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            color: #1565c0;
+            /* Blue label color */
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #1565c0;
+            /* Blue border color */
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #1565c0;
+            /* Blue border color */
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .form-button {
+            background-color: #2196f3;
+            /* Blue button color */
+            color: #ffffff;
+            /* Text color */
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 330ms;
+        }
+
+        .form-button:hover {
+            background-color: #0d47a1;
+            /* Darker blue on hover */
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="form-container">
+        <h2 class="form-heading">Test Details</h2>
+        <div class="form-group">
+            <label for="topic" class="form-label">Select Topic</label>
+            <select id="topic" name="topic" class="form-select">
+                <option value="math">Math</option>
+                <option value="science">Science</option>
+                <option value="history">History</option>
+                <!-- Add more options as needed -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="numQuestions" class="form-label">Number of Questions</label>
+            <input type="number" id="numQuestions" name="numQuestions" class="form-input" />
+        </div>
+        <div class="form-group">
+            <label for="timePerQuestion" class="form-label">Time per Question (in mins)</label>
+            <input type="number" id="timePerQuestion" name="timePerQuestion" class="form-input" />
+        </div>
+        <button type="button" class="form-button">Submit</button>
+    </div>
+</body>
+
+</html>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+{%load static%}
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Classy Test Window</title>
+    <title>Test window</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,6 +15,35 @@
             display: flex;
             height: 100vh;
         }
+
+        .menu {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            width: 25%;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            /* 5 columns */
+            grid-template-rows: repeat(5, 1fr);
+            /* 5 rows */
+            gap: 5px;
+            /* Adjust the gap value to make buttons closer */
+            align-items: flex-start;
+        }
+
+
+        .menu button {
+            background-color: #fff;
+            color: #007bff;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            margin-bottom: 5px;
+            /* Adjust the margin-bottom value to make rows closer */
+            width: 100%;
+            text-align: center;
+        }
+
 
         .test-container {
             background-color: #fff;
@@ -34,13 +64,25 @@
             margin-bottom: 20px;
         }
 
+        .question img {
+            max-width: 100%;
+            max-height: 300px;
+            /* Set a maximum height for the images */
+            height: auto;
+            margin-bottom: 10px;
+        }
+
         .options {
             list-style: none;
             padding: 0;
             margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .options li {
+            margin: 0 10px;
             margin-bottom: 10px;
         }
 
@@ -53,66 +95,63 @@
             cursor: pointer;
             margin-right: 10px;
         }
-
-        .menu {
-            background-color: #007bff;
-            color: #fff;
-            padding: 20px;
-            width: 30%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
     </style>
 </head>
 
 <body>
 
     <div class="menu" id="menu">
-        <button class="navigation-btn" onclick="showQuestion('question1')">Q1</button>
-        <button class="navigation-btn" onclick="showQuestion('question2')">Q2</button>
-        <!-- Add more buttons as needed for additional questions -->
+        <!-- Menu buttons will be dynamically generated here -->
     </div>
+    <form id="test" action="" method="POST">
+        {% csrf_token %}
+        <div class="test-container">
+            <h2>Use the arrow keys to move to the next or previous question</h2>
 
-    <div class="test-container">
-        <h2>Classy Test Window</h2>
+            <div class="question" id="question1">
+                <p><strong>Question 1:</strong> What is the capital of France?</p>
+                <img src="{%static 'img/Ansh_Bhatnagar_23-removebg-preview.png'%}" alt="Paris Image">
+                <ul class="options">
+                    <li><label for="q1"><input type="radio" name="q1" value="paris"> Paris</label></li>
+                    <li><label for="q2"><input type="radio" name="q1" value="berlin"> Berlin</label></li>
+                    <li><label for="q3"><input type="radio" name="q1" value="london"> London</label></li>
+                </ul>
+            </div>
 
-        <div class="question" id="question1">
-            <p><strong>Question 1:</strong> What is the capital of France?</p>
-            <ul class="options">
-                <li><label><input type="radio" name="q1" value="paris"> Paris</label></li>
-                <li><label><input type="radio" name="q1" value="berlin"> Berlin</label></li>
-                <li><label><input type="radio" name="q1" value="london"> London</label></li>
-            </ul>
-            <button class="navigation-btn" onclick="nextQuestion('question1', 'question2')">Next Question</button>
+            <div class="question" id="question2">
+                <p><strong>Question 2:</strong> What is the largest planet in our solar system?</p>
+                <img src="cta-bg.jpg" alt="Jupiter Image">
+                <ul class="options">
+                    <li><label><input type="radio" name="q2" value="mercury"> Mercury</label></li>
+                    <li><label><input type="radio" name="q2" value="venus"> Venus</label></li>
+                    <li><label><input type="radio" name="q2" value="jupiter"> Jupiter</label></li>
+                </ul>
+                <button type="submit" class="navigation-btn" onclick="submitTest()">Submit</button>
+            </div>
+
+            <!-- Add more questions as needed -->
+
         </div>
-
-        <div class="question" id="question2">
-            <p><strong>Question 2:</strong> What is the largest planet in our solar system?</p>
-            <ul class="options">
-                <li><label><input type="radio" name="q2" value="mercury"> Mercury</label></li>
-                <li><label><input type="radio" name="q2" value="venus"> Venus</label></li>
-                <li><label><input type="radio" name="q2" value="jupiter"> Jupiter</label></li>
-            </ul>
-            <button class="navigation-btn" onclick="submitTest()">Submit</button>
-        </div>
-
-        <!-- Add more questions as needed -->
-
-    </div>
+    </form>
 
     <script>
         let currentQuestion = 1;
 
-        function showQuestion(questionId) {
-            // Hide the current question
+        // Dynamically generate menu buttons
+        for (let i = 1; i <= 2; i++) { // Adjust the loop count based on your actual question count
+            let button = document.createElement('button');
+            button.innerText = 'Q' + i;
+            button.className = 'navigation-btn';
+            button.onclick = function () {
+                navigateToQuestion(i);
+            };
+            document.getElementById('menu').appendChild(button);
+        }
+
+        function navigateToQuestion(questionNumber) {
             document.getElementById('question' + currentQuestion).style.display = 'none';
-
-            // Show the selected question
-            document.getElementById(questionId).style.display = 'block';
-
-            // Update the current question
-            currentQuestion = parseInt(questionId.replace('question', ''));
+            document.getElementById('question' + questionNumber).style.display = 'block';
+            currentQuestion = questionNumber;
         }
 
         function nextQuestion(currentQuestionId, nextQuestionId) {
@@ -125,6 +164,14 @@
             // Add logic to collect and process answers
             alert("Test submitted!");
         }
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowRight' && currentQuestion < 2) {
+                nextQuestion('question' + currentQuestion, 'question' + (currentQuestion + 1));
+            } else if (event.key === 'ArrowLeft' && currentQuestion > 1) {
+                nextQuestion('question' + currentQuestion, 'question' + (currentQuestion - 1));
+            }
+        });
     </script>
 
     <script>

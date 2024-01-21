@@ -89,3 +89,25 @@ def index(request):
         return render(request, "index.html", context=ctx)
     else:
         return render(request, "index.html")
+
+
+def test(request):
+    if request.method == "POST":
+        answer1 = request.POST.get("q1", None)
+        answer2 = request.POST.get("q2", None)
+        print(answer1, answer2)
+        return redirect("/")
+    else:
+        return render(request, "test.html")
+
+
+def subject(request):
+    if request.method == "POST":
+        subj = request.POST["subject"]
+        return redirect("test_details", subj)
+    else:
+        return render(request, "subject.html")
+
+
+def test_details(request, subject):
+    return render(request, "test_details.html")

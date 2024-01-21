@@ -25,4 +25,7 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("", views.index, name="index"),
+    path("subject/", views.subject, name="subject"),
+    path(r"test_details/<slug:subject>/", views.test_details, name="test_details"),
+    path("test/", views.test, name="test"),
 ]

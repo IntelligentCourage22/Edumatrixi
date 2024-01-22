@@ -103,24 +103,26 @@
 <body>
     <div class="form-container">
         <h2 class="form-heading">Test Details</h2>
-        <div class="form-group">
-            <label for="topic" class="form-label">Select Topic</label>
-            <select id="topic" name="topic" class="form-select">
-                <option value="math">Math</option>
-                <option value="science">Science</option>
-                <option value="history">History</option>
-                <!-- Add more options as needed -->
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="numQuestions" class="form-label">Number of Questions</label>
-            <input type="number" id="numQuestions" name="numQuestions" class="form-input" />
-        </div>
-        <div class="form-group">
-            <label for="timePerQuestion" class="form-label">Time per Question (in mins)</label>
-            <input type="number" id="timePerQuestion" name="timePerQuestion" class="form-input" />
-        </div>
-        <button type="button" class="form-button">Submit</button>
+        <form action="" method="POST">
+            {%csrf_token%}
+            <div class="form-group">
+                <label for="topic" class="form-label">Select Topic</label>
+                <select id="topic" name="topic" class="form-select">
+                    {%for topic in topics%}
+                    <option value="{{topic}}">{{topic}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="numQuestions" class="form-label">Number of Questions</label>
+                <input type="number" id="numQuestions" name="numQuestions" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label for="timePerQuestion" class="form-label">Time per Question (in mins)</label>
+                <input type="number" id="timePerQuestion" name="timePerQuestion" class="form-input" />
+            </div>
+            <button type="submit" class="form-button">Submit</button>
+        </form>
     </div>
 </body>
 

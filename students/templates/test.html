@@ -14,7 +14,36 @@
             padding: 0;
             display: flex;
             height: 100vh;
+            width: 100vw;
+            position: relative;
         }
+
+        .timer {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .fullscreen-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .fullscreen-button:hover {
+            background-color: #0056b3;
+        }
+
 
         .menu {
             background-color: #007bff;
@@ -99,7 +128,8 @@
 </head>
 
 <body>
-
+    <button class="fullscreen-button" onclick="toggleFullScreen()">Enter Full Screen</button>
+    <div class="timer" id="timer"></div>
     <div class="menu" id="menu">
         <!-- Menu buttons will be dynamically generated here -->
     </div>
@@ -108,28 +138,24 @@
         <div class="test-container">
             <h2>Use the arrow keys to move to the next or previous question</h2>
 
-            <div class="question" id="question1">
-                <p><strong>Question 1:</strong> What is the capital of France?</p>
-                <img src="{%static 'img/Ansh_Bhatnagar_23-removebg-preview.png'%}" alt="Paris Image">
-                <ul class="options">
-                    <li><label for="q1"><input type="radio" name="q1" value="paris"> Paris</label></li>
-                    <li><label for="q2"><input type="radio" name="q1" value="berlin"> Berlin</label></li>
-                    <li><label for="q3"><input type="radio" name="q1" value="london"> London</label></li>
-                </ul>
-            </div>
+            {%for question in questions%}
+            <div class="question" id="question{{forloop.counter}}">
+                <p><strong>Question {{forloop.counter}}:</strong></p>
 
-            <div class="question" id="question2">
-                <p><strong>Question 2:</strong> What is the largest planet in our solar system?</p>
-                <img src="cta-bg.jpg" alt="Jupiter Image">
+                {%with question as image%}
+                <img src="{%static image%}" alt="">
+                {%endwith%}
                 <ul class="options">
-                    <li><label><input type="radio" name="q2" value="mercury"> Mercury</label></li>
-                    <li><label><input type="radio" name="q2" value="venus"> Venus</label></li>
-                    <li><label><input type="radio" name="q2" value="jupiter"> Jupiter</label></li>
+                    <li><label><input type="radio" name="q{{forloop.counter}}" value="1">1</label></li>
+                    <li><label><input type="radio" name="q{{forloop.counter}}" value="2">2</label></li>
+                    <li><label><input type="radio" name="q{{forloop.counter}}" value="3">3</label></li>
+                    <li><label><input type="radio" name="q{{forloop.counter}}" value="4">4</label></li>
                 </ul>
+                {% if forloop.last %}
                 <button type="submit" class="navigation-btn" onclick="submitTest()">Submit</button>
+                {%endif%}
             </div>
-
-            <!-- Add more questions as needed -->
+            {%endfor%}
 
         </div>
     </form>
@@ -138,7 +164,7 @@
         let currentQuestion = 1;
 
         // Dynamically generate menu buttons
-        for (let i = 1; i <= 2; i++) { // Adjust the loop count based on your actual question count
+        for (let i = 1; i <= parseInt("{{numOfQuestions}}"); i++) { // Adjust the loop count based on your actual question count
             let button = document.createElement('button');
             button.innerText = 'Q' + i;
             button.className = 'navigation-btn';
@@ -166,12 +192,49 @@
         }
 
         document.addEventListener('keydown', function (event) {
-            if (event.key === 'ArrowRight' && currentQuestion < 2) {
+            if (event.key === 'ArrowRight' && currentQuestion < parseInt("{{numOfQuestions}}")) {
                 nextQuestion('question' + currentQuestion, 'question' + (currentQuestion + 1));
             } else if (event.key === 'ArrowLeft' && currentQuestion > 1) {
                 nextQuestion('question' + currentQuestion, 'question' + (currentQuestion - 1));
             }
         });
+        function toggleFullScreen() {
+            var doc = window.document;
+            var docEl = doc.documentElement;
+
+            var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+
+            if (requestFullScreen) {
+                requestFullScreen.call(docEl);
+            }
+        }
+
+        // Removed the full-screen auto-trigger due to security restrictions
+
+        window.onload = function () {
+            startTimer(parseInt("{{ time }}")); // Set the timer duration in seconds
+        };
+
+        function startTimer(duration) {
+            var timerElement = document.getElementById('timer');
+            var timer = duration, minutes, seconds;
+
+            var countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                timerElement.textContent = minutes + ':' + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    // Close the webpage after the timer goes out
+                    window.location.href = "{% url 'home'%}";
+                }
+            }, 1000);
+        }
     </script>
 
     <script>

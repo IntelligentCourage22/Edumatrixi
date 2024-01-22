@@ -91,16 +91,6 @@ def index(request):
         return render(request, "index.html")
 
 
-def test(request):
-    if request.method == "POST":
-        answer1 = request.POST.get("q1", None)
-        answer2 = request.POST.get("q2", None)
-        print(answer1, answer2)
-        return redirect("/")
-    else:
-        return render(request, "test.html")
-
-
 def subject(request):
     if request.method == "POST":
         subj = request.POST["subject"]
@@ -110,4 +100,37 @@ def subject(request):
 
 
 def test_details(request, subject):
-    return render(request, "test_details.html")
+    list_of_topics = topic_names(subject)
+    if request.method == "POST":
+        topic = "".join(request.POST["topic"].split())
+        print(topic)
+        numQuestions = request.POST["numQuestions"]
+        time = request.POST["timePerQuestion"]
+        return redirect("test", subject, topic, numQuestions, time)
+    else:
+        return render(request, "test_details.html", context={"topics": list_of_topics})
+
+
+def test(request, subject, topic, numQuestions, time):
+    try:
+        questions = get_questions(topic, subject)[: int(numQuestions)]
+        print(questions)
+    except IndexError:
+        questions = get_questions(topic, subject)
+        print(questions)
+    user_response = []
+    if request.method == "POST":
+        for i in range(1, len(questions) + 1):
+            user_response.append((f"answer{i}", request.POST.get(f"q{i}")))
+        print(user_response)
+        return redirect("/")
+    else:
+        return render(
+            request,
+            "test.html",
+            context={
+                "questions": questions,
+                "time": int(time) * 60 * len(questions),
+                "numOfQuestions": len(questions),
+            },
+        )

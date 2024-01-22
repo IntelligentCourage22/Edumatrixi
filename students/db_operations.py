@@ -64,39 +64,39 @@ def info(email, param):
     return new_string
 
 
-"""
--- Users Table
-CREATE TABLE Users (
-    user_id INT PRIMARY KEY,
-    username VARCHAR(255),
-    email VARCHAR(255),
-    password_hash VARCHAR(255)
-);
-
--- Subjects Table
-CREATE TABLE Subjects (
+# Subjects Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS Subjects (
     subject_id INT PRIMARY KEY,
     subject_name VARCHAR(255)
-);
+);"""
+)
 
--- Topics Table
-CREATE TABLE Topics (
+# Topics Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS Topics (
     topic_id INT PRIMARY KEY,
     topic_name VARCHAR(255),
     subject_id INT,
     FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id)
-);
+);"""
+)
 
--- Questions Table
-CREATE TABLE Questions (
-    question_id INT PRIMARY KEY,
+
+# Questions Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS Questions (
+    question_id INTEGER PRIMARY KEY AUTOINCREMENT,
     question_text TEXT,
+    answer TEXT,
     topic_id INT,
     FOREIGN KEY (topic_id) REFERENCES Topics(topic_id)
-);
+);"""
+)
 
--- Tests Table
-CREATE TABLE Tests (
+# Tests Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS Tests (
     test_id INT PRIMARY KEY,
     user_id INT,
     subject_id INT,
@@ -105,19 +105,23 @@ CREATE TABLE Tests (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (subject_id) REFERENCES Subjects(subject_id),
     FOREIGN KEY (topic_id) REFERENCES Topics(topic_id)
-);
+);"""
+)
 
--- TestQuestions Table
-CREATE TABLE TestQuestions (
+# TestQuestions Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS TestQuestions (
     test_question_id INT PRIMARY KEY,
     test_id INT,
     question_id INT, 
     FOREIGN KEY (test_id) REFERENCES Tests(test_id),
     FOREIGN KEY (question_id) REFERENCES Questions(question_id)
-);
+);"""
+)
 
--- UserResponses Table
-CREATE TABLE UserResponses (
+# UserResponses Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS UserResponses (
     response_id INT PRIMARY KEY,
     user_id INT,
     test_id INT,
@@ -126,16 +130,59 @@ CREATE TABLE UserResponses (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (test_id) REFERENCES Tests(test_id),
     FOREIGN KEY (question_id) REFERENCES Questions(question_id)
-);
+);"""
+)
 
--- Mistakes Table
-CREATE TABLE Mistakes (
+# Mistakes Table
+db.execute(
+    """CREATE TABLE IF NOT EXISTS Mistakes (
     mistake_id INT PRIMARY KEY,
     user_id INT,
     question_id INT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (question_id) REFERENCES Questions(question_id)
-);
+);"""
+)
 
 
-"""
+def clean(word):
+    characters_to_remove = "[('',)]"
+    new_string = word
+    for character in characters_to_remove:
+        new_string = new_string.replace(character, "")
+    return new_string
+
+
+def topic_names(subject):
+    db.execute(
+        f"SELECT subject_id from Subjects WHERE subject_name = '{subject.title().strip()}'"
+    )
+    subject_id = int(clean(str(db.fetchall())))
+    db.execute(f"SELECT topic_name FROM Topics WHERE subject_id = {subject_id}")
+    res = db.fetchall()
+    names = []
+    for i in res:
+        names.append(i[0])
+    return names
+
+
+def topic_id(topic):
+    db.execute(f"SELECT topic_id from Topics WHERE topic_name = '{topic.strip()}'")
+    topic_id = int(clean(str(db.fetchall())))
+    return topic_id
+
+
+def get_questions(topic, subject):
+    list_of_topics = topic_names(subject)
+    ques = []
+    for i in list_of_topics:
+        if "".join(i.split()) == topic:
+            db.execute(
+                f"SELECT question_text from Questions where topic_id={topic_id(i)}"
+            )
+            res = db.fetchall()
+            for i in res:
+                ques.append(clean(str(i)))
+            con.commit()
+    print(ques)
+    return ques

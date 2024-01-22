@@ -27,5 +27,9 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("subject/", views.subject, name="subject"),
     path(r"test_details/<slug:subject>/", views.test_details, name="test_details"),
-    path("test/", views.test, name="test"),
+    path(
+        r"test/<slug:subject>/<slug:topic>/<slug:numQuestions>/<slug:time>",
+        views.test,
+        name="test",
+    ),
 ]

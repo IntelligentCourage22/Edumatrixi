@@ -93,11 +93,10 @@ db.execute(
     FOREIGN KEY (topic_id) REFERENCES Topics(topic_id)
 );"""
 )
-
 # Tests Table
 db.execute(
     """CREATE TABLE IF NOT EXISTS Tests (
-    test_id INT PRIMARY KEY,
+    test_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INT,
     subject_id INT,
     topic_id INT,
@@ -111,7 +110,7 @@ db.execute(
 # TestQuestions Table
 db.execute(
     """CREATE TABLE IF NOT EXISTS TestQuestions (
-    test_question_id INT PRIMARY KEY,
+    test_question TEXT,
     test_id INT,
     question_id INT, 
     FOREIGN KEY (test_id) REFERENCES Tests(test_id),
@@ -122,11 +121,12 @@ db.execute(
 # UserResponses Table
 db.execute(
     """CREATE TABLE IF NOT EXISTS UserResponses (
-    response_id INT PRIMARY KEY,
+    response_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INT,
     test_id INT,
     question_id INT,
     selected_option VARCHAR(255),
+    status BIT,
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (test_id) REFERENCES Tests(test_id),
     FOREIGN KEY (question_id) REFERENCES Questions(question_id)
@@ -167,22 +167,67 @@ def topic_names(subject):
 
 
 def topic_id(topic):
-    db.execute(f"SELECT topic_id from Topics WHERE topic_name = '{topic.strip()}'")
-    topic_id = int(clean(str(db.fetchall())))
-    return topic_id
+    statement = f"SELECT topic_id from Topics WHERE topic_name = '{topic}'"
+    db.execute(statement)
+    topicid = int(clean(str(db.fetchall())))
+    return topicid
+
+
+def subject_id(subject):
+    db.execute(
+        f"SELECT subject_id from Subjects WHERE subject_name = '{subject.strip().capitalize()}'"
+    )
+    subject_id = int(clean(str(db.fetchall())))
+    return subject_id
+
+
+def question_id(question):
+    db.execute(f"SELECT question_id from Questions WHERE question_text = '{question}'")
+    questionid = int(clean(str(db.fetchall())))
+    return questionid
+
+
+def get_test_id():
+    statement = f"SELECT test_id FROM Tests ORDER BY test_id DESC LIMIT 1;"
+    db.execute(statement)
+    res = int(clean(str(db.fetchall())))
+    return res
 
 
 def get_questions(topic, subject):
     list_of_topics = topic_names(subject)
     ques = []
+    ans = []
     for i in list_of_topics:
         if "".join(i.split()) == topic:
             db.execute(
                 f"SELECT question_text from Questions where topic_id={topic_id(i)}"
             )
             res = db.fetchall()
-            for i in res:
-                ques.append(clean(str(i)))
             con.commit()
-    print(ques)
-    return ques
+            for j in res:
+                ques.append(clean(str(j)))
+            db.execute(f"SELECT answer from Questions where topic_id={topic_id(i)}")
+            res2 = db.fetchall()
+            for k in res2:
+                ans.append(clean(str(k)))
+            con.commit()
+
+    return list(zip(ques, ans))
+
+
+def create_test(topic, subject, user_id):
+    statement = (
+        "INSERT INTO Tests (user_id,subject_id,topic_id,test_name) VALUES (?,?,?,?)"
+    )
+    topicid = topic_id(topic)
+    subjectid = subject_id(subject)
+    data_tuple = (user_id, subjectid, topicid, topic)
+    db.execute(statement, data_tuple)
+
+
+def enter_testdata(user_id, test_id, question_id, selected_option, status):
+    statement = "INSERT INTO UserResponses (user_id,test_id,question_id,selected_option,status) VALUES (?,?,?,?,?)"
+    data_tuple = (user_id, test_id, question_id, selected_option, status)
+    db.execute(statement, data_tuple)
+    con.commit()

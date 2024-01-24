@@ -22,7 +22,7 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            font-size: 24px;
+            font-size: 32px;
             color: #333;
         }
 
@@ -230,8 +230,8 @@
 
                 if (--timer < 0) {
                     clearInterval(countdown);
-                    // Close the webpage after the timer goes out
-                    window.location.href = "{% url 'home'%}";
+                    // submit the test after timer runs out
+                    document.getElementById('test').submit()
                 }
             }, 1000);
         }

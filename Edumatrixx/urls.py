@@ -28,8 +28,9 @@ urlpatterns = [
     path("subject/", views.subject, name="subject"),
     path(r"test_details/<slug:subject>/", views.test_details, name="test_details"),
     path(
-        r"test/<slug:subject>/<slug:topic>/<slug:numQuestions>/<slug:time>",
+        r"test/<slug:subject>/<slug:topic>/<slug:numQuestions>/<slug:time>/<slug:userid>/<slug:testid>",
         views.test,
         name="test",
     ),
+    path(r"report/<slug:testid>", views.report, name="report"),
 ]

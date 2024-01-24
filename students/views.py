@@ -8,7 +8,7 @@ echo "# Edumatrixi" >> README.md
   git push -u origin main
 """
 
-
+import random
 from django.shortcuts import render, redirect, HttpResponseRedirect
 from django.contrib import messages
 from .db_operations import *
@@ -32,7 +32,6 @@ def login_required(function):
 def home(request):
     if "user" in request.session:
         cuser = request.session["user"]
-        print(cuser)
         name_of_user = info(cuser, "name")
         ctx = {"name": name_of_user}
         return render(request, "home.html", context=ctx)
@@ -91,6 +90,7 @@ def index(request):
         return render(request, "index.html")
 
 
+@login_required
 def subject(request):
     if request.method == "POST":
         subj = request.POST["subject"]
@@ -99,31 +99,55 @@ def subject(request):
         return render(request, "subject.html")
 
 
+@login_required
 def test_details(request, subject):
     list_of_topics = topic_names(subject)
     if request.method == "POST":
+        topic_name = request.POST["topic"]
         topic = "".join(request.POST["topic"].split())
         print(topic)
         numQuestions = request.POST["numQuestions"]
         time = request.POST["timePerQuestion"]
-        return redirect("test", subject, topic, numQuestions, time)
+        user_id = info(request.session["user"], "userid")
+        create_test(topic_name, subject, user_id)
+        test_id = get_test_id()
+        return redirect("test", subject, topic, numQuestions, time, user_id, test_id)
     else:
         return render(request, "test_details.html", context={"topics": list_of_topics})
 
 
-def test(request, subject, topic, numQuestions, time):
+@login_required
+def test(request, subject, topic, numQuestions, time, userid, testid):
     try:
-        questions = get_questions(topic, subject)[: int(numQuestions)]
-        print(questions)
+        qna = get_questions(topic, subject)[: int(numQuestions)]
+
     except IndexError:
-        questions = get_questions(topic, subject)
-        print(questions)
+        qna = get_questions(topic, subject)
+    questions = [ques for ques, ans in qna]
+    answers = [ans for ques, ans in qna]
+    if int(numQuestions) < len(questions):
+        questions = random.sample(questions, k=numQuestions)
+
     user_response = []
     if request.method == "POST":
         for i in range(1, len(questions) + 1):
-            user_response.append((f"answer{i}", request.POST.get(f"q{i}")))
-        print(user_response)
-        return redirect("/")
+            user_response.append(request.POST.get(f"q{i}"))
+        for i in range(len(questions)):
+            status = 0
+            if answers[i] == user_response[i]:
+                status = 1
+            if not user_response[i]:
+                status = None
+            enter_testdata(
+                userid,
+                testid,
+                question_id(questions[i]),
+                user_response[i],
+                status,
+            )
+            print("done")
+
+        return redirect("report", testid)
     else:
         return render(
             request,
@@ -134,3 +158,32 @@ def test(request, subject, topic, numQuestions, time):
                 "numOfQuestions": len(questions),
             },
         )
+
+
+@login_required
+def report(request, testid):
+    db.execute(f"SELECT * FROM UserResponses where test_id = {testid}")
+    res = db.fetchall()
+    con.commit()
+    print(res)
+    correct = 0
+    wrong = 0
+    unattempted = 0
+    for i in range(len(res)):
+        if res[i][-1] == 0:
+            wrong += 1
+        elif res[i][-1] == 1:
+            correct += 1
+        elif res[i][-1] == None:
+            unattempted += 1
+
+    return render(
+        request,
+        "report.html",
+        context={
+            "correct": correct,
+            "wrong": wrong,
+            "unattempted": unattempted,
+            "total": len(res),
+        },
+    )

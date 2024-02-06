@@ -52,7 +52,7 @@ def check(email):
     else:
         return False
 
-
+#get other info of users using email
 def info(email, param):
     statement = f"SELECT {param} FROM users WHERE email ='{email}'"
     db.execute(statement)
@@ -144,7 +144,7 @@ db.execute(
 );"""
 )
 
-
+#clean string
 def clean(word):
     characters_to_remove = "[('',)]"
     new_string = word
@@ -152,7 +152,7 @@ def clean(word):
         new_string = new_string.replace(character, "")
     return new_string
 
-
+#get topic names
 def topic_names(subject):
     db.execute(
         f"SELECT subject_id from Subjects WHERE subject_name = '{subject.title().strip()}'"

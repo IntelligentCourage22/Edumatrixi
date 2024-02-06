@@ -52,7 +52,8 @@ def check(email):
     else:
         return False
 
-#get other info of users using email
+
+# get other info of users using email
 def info(email, param):
     statement = f"SELECT {param} FROM users WHERE email ='{email}'"
     db.execute(statement)
@@ -144,7 +145,8 @@ db.execute(
 );"""
 )
 
-#clean string
+
+# clean string
 def clean(word):
     characters_to_remove = "[('',)]"
     new_string = word
@@ -152,7 +154,8 @@ def clean(word):
         new_string = new_string.replace(character, "")
     return new_string
 
-#get topic names
+
+# get topic names
 def topic_names(subject):
     db.execute(
         f"SELECT subject_id from Subjects WHERE subject_name = '{subject.title().strip()}'"
@@ -166,6 +169,7 @@ def topic_names(subject):
     return names
 
 
+# get topic id
 def topic_id(topic):
     statement = f"SELECT topic_id from Topics WHERE topic_name = '{topic}'"
     db.execute(statement)
@@ -173,6 +177,7 @@ def topic_id(topic):
     return topicid
 
 
+# get subject id
 def subject_id(subject):
     db.execute(
         f"SELECT subject_id from Subjects WHERE subject_name = '{subject.strip().capitalize()}'"
@@ -181,12 +186,14 @@ def subject_id(subject):
     return subject_id
 
 
+# get question id
 def question_id(question):
     db.execute(f"SELECT question_id from Questions WHERE question_text = '{question}'")
     questionid = int(clean(str(db.fetchall())))
     return questionid
 
 
+# get latest test id
 def get_test_id():
     statement = f"SELECT test_id FROM Tests ORDER BY test_id DESC LIMIT 1;"
     db.execute(statement)
@@ -194,6 +201,7 @@ def get_test_id():
     return res
 
 
+# get questions and answers from a topic , return a list of tuples
 def get_questions(topic, subject):
     list_of_topics = topic_names(subject)
     ques = []
@@ -216,6 +224,7 @@ def get_questions(topic, subject):
     return list(zip(ques, ans))
 
 
+# create a new test
 def create_test(topic, subject, user_id):
     statement = (
         "INSERT INTO Tests (user_id,subject_id,topic_id,test_name) VALUES (?,?,?,?)"
@@ -226,6 +235,7 @@ def create_test(topic, subject, user_id):
     db.execute(statement, data_tuple)
 
 
+# enter test data into responses table to generate result
 def enter_testdata(user_id, test_id, question_id, selected_option, status):
     statement = "INSERT INTO UserResponses (user_id,test_id,question_id,selected_option,status) VALUES (?,?,?,?,?)"
     data_tuple = (user_id, test_id, question_id, selected_option, status)

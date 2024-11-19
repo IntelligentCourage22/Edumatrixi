@@ -241,3 +241,68 @@ def enter_testdata(user_id, test_id, question_id, selected_option, status):
     data_tuple = (user_id, test_id, question_id, selected_option, status)
     db.execute(statement, data_tuple)
     con.commit()
+
+
+def get_total_attempts(user_id, subject_id):
+    db.execute(
+        f"""SELECT COUNT(*) 
+            FROM UserResponses ur
+            JOIN Questions q ON ur.question_id = q.question_id
+            JOIN Topics t ON q.topic_id = t.topic_id
+            WHERE ur.user_id = {user_id} AND t.subject_id = {subject_id}"""
+    )
+    return clean(str(db.fetchall()))
+
+
+def total_correct_attempts(user_id, subject_id):
+    db.execute(
+        f"""SELECT COUNT(*) 
+            FROM UserResponses ur
+            JOIN Questions q ON ur.question_id = q.question_id
+            JOIN Topics t ON q.topic_id = t.topic_id
+            WHERE ur.user_id = {user_id} AND t.subject_id = {subject_id} and status=1"""
+    )
+    return clean(str(db.fetchall()))
+
+
+def get_accuracy(user_id):
+    db.execute(f"SELECT COUNT(*) FROM UserResponses where user_id={user_id}")
+    total = clean(str(db.fetchall()))
+    db.execute(
+        f"SELECT COUNT(*) FROM UserResponses where user_id={user_id} and status=1"
+    )
+    total_correct = clean(str(db.fetchall()))
+    try:
+        return (int(total_correct) / int(total)) * 100
+    except ZeroDivisionError:
+        return 0
+
+
+def get_tests_for_a_user(user_id):
+    statement = f"""
+    SELECT 
+    s.subject_name,
+    t_topic.topic_name,
+    COUNT(ur_resp.response_id) AS correct_answers_count
+FROM 
+    Tests t  -- All tests the user has taken
+JOIN 
+    Topics t_topic ON t.topic_id = t_topic.topic_id
+JOIN 
+    Subjects s ON t_topic.subject_id = s.subject_id
+LEFT JOIN 
+    UserResponses ur_resp ON t.test_id = ur_resp.test_id 
+    AND ur_resp.user_id = {user_id} 
+    AND ur_resp.status = 1  -- Correct answers
+WHERE 
+    ur_resp.user_id = {user_id}  -- Filter by user_id here
+GROUP BY 
+    t.test_id, s.subject_name, t_topic.topic_name
+ORDER BY 
+    t.test_id;
+
+    """
+    db.execute(statement)
+    results = list(db.fetchall())
+    print(results)
+    return results

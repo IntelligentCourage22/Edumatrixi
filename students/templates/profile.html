@@ -1,0 +1,298 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Edumatrixx - Profile</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="{% static 'img/favicon.png' %}" rel="icon">
+    <link href="{% static 'img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Jost:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/aos/aos.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/home_styles.css' %}" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Navbar adjustments */
+        #header {
+            background-color: #2c3e50;
+            /* Darker background for better contrast */
+            color: #ffffff;
+            /* White text color */
+        }
+
+        #navbar .nav-link {
+            color: #ffffff !important;
+            /* Make navbar text white */
+        }
+
+        #navbar .nav-link:hover {
+            color: #f1c40f !important;
+            /* Highlight on hover */
+        }
+
+        /* Profile Page Background */
+        body {
+            background-color: #f5f6fa;
+            /* Light grey background for better contrast */
+        }
+
+        /* Section Title adjustments */
+        .section-title {
+            text-align: center;
+            padding-top: 80px;
+            /* Adjust top padding to prevent overlap */
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            /* Dark grey for good visibility */
+        }
+
+        /* Profile Card Styles */
+        .profile-card {
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .profile-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+
+        /* Card adjustments */
+        .card {
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        /* Progress Bar Styles */
+        .progress {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            background-color: #3498db;
+            /* Light blue for progress bars */
+        }
+
+        /* Past Tests Table */
+        .table thead {
+            background-color: #3498db;
+            /* Light blue header for table */
+            color: #ffffff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1f1f1;
+            /* Light grey hover effect for rows */
+        }
+
+        /* Profile Section Adjustments */
+        #profile {
+            padding-top: 100px;
+            /* Adjust padding to prevent overlap */
+        }
+
+        /* Update Profile Form Styles */
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .btn-update-profile {
+            background-color: #3498db;
+            color: white;
+            margin-top: 15px;
+        }
+
+        .btn-update-profile:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top">
+        <div class="container d-flex align-items-center">
+            <h1 class="logo me-auto">Edumatrixx</h1>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link getstarted scrollto" href="#profile">Hello, {{ name }}!</a></li>
+                    <li><a class="nav-link scrollto" href="">Change Password</a></li>
+                    <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </nav><!-- .navbar -->
+        </div>
+    </header><!-- End Header -->
+
+    <!-- ======= Profile Section ======= -->
+    <section id="profile" class="profile">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title">
+                <h2>Your Profile</h2>
+                <p>View your past tests, progress, and achievements</p>
+            </div>
+
+            <div class="row">
+                <!-- Profile Overview -->
+                <div class="col-lg-4">
+                    <div class="card profile-card text-center">
+                        <div class="card-body">
+                            <img src="{%static 'img/dan final.png'%}" class="rounded-circle img-fluid"
+                                alt="Profile Picture">
+                            <h3>{{ name }}
+                                <a href="" class="text-dark" style="font-size: 20px; margin-left: 10px;">
+                                    <i class="bi bi-pencil"></i> <!-- Pen icon -->
+                                </a>
+                            </h3>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Statistics -->
+                <div class="col-lg-8">
+                    <section id="skills" class="skills">
+                        <div class="container" data-aos="fade-up">
+
+                            <div class="row">
+
+                                <div class="justify-content-center" data-aos="fade-left" data-aos-delay="100">
+                                    <h3>Track your progress</h3>
+                                    <p class="fst-italic">
+                                        This shows your total percentage of correct answers in all the questions you
+                                        have attempted
+                                    </p>
+                                    <br><br>
+                                    <div class="skills-content">
+
+                                        <div class="progress">
+                                            <span class="skill">Overall <i class="val">{{overall_accuracy}}%</i></span>
+                                            <div class="progress-bar-wrap">
+                                                <div class="progress-bar" role="progressbar"
+                                                    aria-valuenow="{{overall_accuracy}}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="progress">
+                                            <span class="skill">Physics <i class="val">{{physics_accuracy}}%</i></span>
+                                            <div class="progress-bar-wrap">
+                                                <div class="progress-bar" role="progressbar"
+                                                    aria-valuenow="{{physics_accuracy}}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress">
+                                            <span class="skill">Chemistry <i class="val">{{chem_accuracy}}%</i></span>
+                                            <div class="progress-bar-wrap">
+                                                <div class="progress-bar" role="progressbar"
+                                                    aria-valuenow="{{chem_accuracy}}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress">
+                                            <span class="skill">Mathematics<i class="val">{{math_accuracy}}%</i></span>
+                                            <div class="progress-bar-wrap">
+                                                <div class="progress-bar" role="progressbar"
+                                                    aria-valuenow="{{math_accuracy}}" aria-valuemin="0"
+                                                    aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Past Tests -->
+                <div class="row mt-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Past Tests</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Subject</th>
+                                                <th>Topics</th>
+                                                <th>Score</th>
+                                                <th>Accuracy</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for subject,topic,correct in tests %}
+                                            <tr>
+                                                <td>{{ subject }}</td>
+                                                <td>{{topic }}</td>
+                                                <td>{{ correct }}</td>
+                                                <td>{{ test.accuracy }}%</td>
+
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </section><!-- End Profile Section -->
+
+    <!-- Vendor JS Files -->
+    <script src="{% static 'vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/waypoints/noframework.waypoints.js' %}"></script>
+
+    <!-- Template Main JS File -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

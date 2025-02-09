@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-{%load static%}
 
 <head>
     <meta charset="UTF-8">
@@ -135,17 +134,33 @@
         </thead>
         <tbody>
             <!-- Row 1 -->
-            {% for row in generated_report%}
             <tr>
                 <td class="question">
-
-                    <img src="{%static row.0%}" alt="Question">
+                    <img src="https://via.placeholder.com/200x100.png?text=Question+1" alt="Question 1">
                 </td>
-                <td class="correct-answer">{{row.1}}</td>
-                <td class="user-answer">{{row.2}}</td>
-                <td class="feedback {{row.3}}">{{row.3}}</td>
+                <td class="correct-answer">Option B</td>
+                <td class="user-answer">Option A</td>
+                <td class="feedback incorrect">Incorrect</td>
             </tr>
-            {%endfor%}
+            <!-- Row 2 -->
+            <tr>
+                <td class="question">
+                    <img src="https://via.placeholder.com/200x100.png?text=Question+2" alt="Question 2">
+                </td>
+                <td class="correct-answer">Option C</td>
+                <td class="user-answer">Option C</td>
+                <td class="feedback correct">Correct</td>
+            </tr>
+            <!-- Row 3 -->
+            <tr>
+                <td class="question">
+                    <img src="https://via.placeholder.com/200x100.png?text=Question+3" alt="Question 3">
+                </td>
+                <td class="correct-answer">Option D</td>
+                <td class="user-answer">Option A</td>
+                <td class="feedback incorrect">Incorrect</td>
+            </tr>
+            <!-- Add more rows as needed -->
         </tbody>
     </table>
 

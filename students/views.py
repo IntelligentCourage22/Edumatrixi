@@ -16,6 +16,11 @@ from django.http import Http404
 from .models import *
 from .db_operations import *
 from django.contrib import messages
+import smtplib
+import getpass
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 # wrapper function for only logged in users to acces certian pages
@@ -81,6 +86,116 @@ def login(request):
 
     else:
         return render(request, "login.html")
+
+
+@login_required
+def change_username(request):
+    if request.method == "POST":
+        new_name = request.POST["username"]
+        password = request.POST["password"]
+        email = request.session["user"]
+        # check if credentials are right
+        status = edit_name(new_name, password, email)
+        if status:
+            return redirect("/profile")
+        else:
+            messages.info(request, "Invalid credentials")
+            return redirect("/editname")
+
+    else:
+        return render(request, "edit_name.html")
+
+
+@login_required
+def request_change(request):
+    if "user" in request.session:
+        HOST = "smtp.gmail.com"
+        PORT = 587
+        FROM_EMAIL = "bansh8956@gmail.com"
+        TO_EMAIL = request.session["user"]
+        PASSWORD = "lrry hlza eojl hvlc"
+
+        message = MIMEMultipart("alternative")
+        message["Subject"] = "<add subject here>"
+        message["From"] = FROM_EMAIL
+        message["To"] = TO_EMAIL
+        message["Cc"] = FROM_EMAIL
+        message["Bcc"] = FROM_EMAIL
+        html = """<html>
+
+<body style="font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; background-color: #f4f4f9;">
+    <table
+        style="max-width: 600px; margin: 20px auto; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <tr>
+            <td
+                style="background-color: #4CAF50; color: white; text-align: center; padding: 20px; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                <h1 style="margin: 0;">Reset Your Password</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 20px; color: #333;">
+                <p>Hey!</p>
+                <p>We received a request to reset your password. Click the button below to reset it:</p>
+                <p style="text-align: center; margin: 20px 0;">
+                    <a href="http://localhost:8000/reset_password"
+                        style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #4CAF50; border-radius: 5px; text-decoration: none;">
+                        Reset Password
+                    </a>
+                </p>
+                <p>If you did not request this, you can ignore this email. Your password will not change.</p>
+            </td>
+        </tr>
+        <tr>
+            <td
+                style="text-align: center; padding: 20px; background: #f4f4f9; border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; color: #999; font-size: 12px;">
+                <p>&copy; 2025 Edumatrixx. All rights reserved.</p>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>"""
+
+        html_part = MIMEText(html, "html")
+        message.attach(html_part)
+
+        smtp = smtplib.SMTP(HOST, PORT)
+
+        status_code, response = smtp.ehlo()
+        print(f"[*] Echoing the server: {status_code} {response}")
+
+        status_code, response = smtp.starttls()
+        print(f"[*] Starting TLS connection: {status_code} {response}")
+
+        status_code, response = smtp.login(FROM_EMAIL, PASSWORD)
+        print(f"[*] Logging in: {status_code} {response}")
+
+        smtp.sendmail(FROM_EMAIL, TO_EMAIL, message.as_string())
+        smtp.quit()
+
+        return render(request, "request_passwordchange.html")
+
+    # else return the original template with login an signup on nav bar
+    else:
+        return render(request, "home.html")
+
+
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        new_pwd = request.POST["new_pwd"]
+        old_pwd = request.POST["old_pwd"]
+        email = request.session["user"]
+        # check if credentials are right
+        status = change_pwd(old_pwd, new_pwd, email)
+        if status:
+            return redirect("/profile")
+        else:
+            messages.info(request, "Invalid credentials")
+            return redirect("/change_pwd")
+
+    else:
+        return render(request, "reset_password.html")
 
 
 @login_required
@@ -254,6 +369,8 @@ def report(request, testid):
         elif res[i][-1] == None:
             unattempted += 1
     # render the template for result
+    generated_report = generate_test_report(testid)
+
     return render(
         request,
         "report.html",
@@ -262,5 +379,6 @@ def report(request, testid):
             "wrong": wrong,
             "unattempted": unattempted,
             "total": len(res),
+            "generated_report": generated_report,
         },
     )

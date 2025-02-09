@@ -67,22 +67,21 @@
 <body>
 
     <div class="login-container">
-        <h2>Login to your account</h2>
+        <h2>Change your username</h2>
         <form id="loginForm" method="POST">
             {% csrf_token %}
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+                <label for="username">New Username:</label>
+                <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
             <div class="form-group">
-                <input type="submit" value="Login">
+                <input type="submit" value="Submit">
             </div>
         </form>
-        <p>New here? <a href="{%url 'signup'%}">Sign up</a></p>
         {%for message in messages%}
         <p class="error-message" id="error-message"></p>
         <p class="error-message" id="error-message">{{message}}</p>

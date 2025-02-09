@@ -155,6 +155,28 @@ def clean(word):
     return new_string
 
 
+# edit name
+def edit_name(new_name, password, email):
+    db.execute(f"SELECT password from users where email='{email}'")
+    pwd = clean(str(db.fetchall()))
+    if pwd == password:
+        db.execute(f"Update users set name='{new_name}' where email='{email}'")
+        con.commit()
+        return True
+    return False
+
+
+# change password
+def change_pwd(old_password, new_password, email):
+    db.execute(f"SELECT password from users where email='{email}'")
+    pwd = clean(str(db.fetchall()))
+    if pwd == old_password:
+        db.execute(f"Update users set password='{new_password}' where email='{email}'")
+        con.commit()
+        return True
+    return False
+
+
 # get topic names
 def topic_names(subject):
     db.execute(
@@ -243,6 +265,7 @@ def enter_testdata(user_id, test_id, question_id, selected_option, status):
     con.commit()
 
 
+# total questions attempted
 def get_total_attempts(user_id, subject_id):
     db.execute(
         f"""SELECT COUNT(*) 
@@ -254,6 +277,7 @@ def get_total_attempts(user_id, subject_id):
     return clean(str(db.fetchall()))
 
 
+# correct questions
 def total_correct_attempts(user_id, subject_id):
     db.execute(
         f"""SELECT COUNT(*) 
@@ -306,3 +330,24 @@ ORDER BY
     results = list(db.fetchall())
     print(results)
     return results
+
+
+def generate_test_report(test_id):
+    statement = f"SELECT question_id,selected_option,status FROM UserResponses where test_id={test_id}"
+    db.execute(statement)
+    data = db.fetchall()
+    for i in range(len(data)):
+        filtered_data = []
+        s = f"SELECT question_text,answer from Questions where question_id={data[i][0]}"
+        db.execute(s)
+        qna = db.fetchall()
+        question = qna[0][0]
+        answer = qna[0][1]
+        status = ""
+        if data[i][2] == 0:
+            status = "incorrect"
+        elif data[i][2] == 1:
+            status = "correct"
+        filtered_data.extend([question, answer, data[i][1], status])
+        data[i] = filtered_data
+    return data

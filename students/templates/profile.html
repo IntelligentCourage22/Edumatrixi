@@ -150,7 +150,7 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link getstarted scrollto" href="#profile">Hello, {{ name }}!</a></li>
-                    <li><a class="nav-link scrollto" href="">Change Password</a></li>
+                    <li><a class="nav-link scrollto" href="{% url 'req_pwd_change'%}">Change Password</a></li>
                     <li><a class="nav-link scrollto" href="{% url 'logout' %}">Logout</a></li>
                 </ul>
             </nav><!-- .navbar -->
@@ -170,10 +170,11 @@
                 <div class="col-lg-4">
                     <div class="card profile-card text-center">
                         <div class="card-body">
-                            <img src="{%static 'img/dan final.png'%}" class="rounded-circle img-fluid"
+                            <img src="{%static 'img/default_pfp.jpg'%}" class="rounded-circle img-fluid"
                                 alt="Profile Picture">
                             <h3>{{ name }}
-                                <a href="" class="text-dark" style="font-size: 20px; margin-left: 10px;">
+                                <a href="{% url 'edit_name'%}" class="text-dark"
+                                    style="font-size: 20px; margin-left: 10px;">
                                     <i class="bi bi-pencil"></i> <!-- Pen icon -->
                                 </a>
                             </h3>

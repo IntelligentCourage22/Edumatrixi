@@ -35,4 +35,7 @@ urlpatterns = [
     ),
     path(r"report/<slug:testid>", views.report, name="report"),
     path("profile/", views.profile, name="profile"),
+    path("editname/", views.change_username, name="edit_name"),
+    path("request-password-reset/", views.request_change, name="req_pwd_change"),
+    path("reset_password/", views.change_password, name="change_pwd"),
 ]
